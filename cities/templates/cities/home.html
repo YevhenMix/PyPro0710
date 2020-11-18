@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}Список городов{% endblock %}
+
+{% block content %}
+
+<h1>Список городов</h1>
+    <div class="row">
+        <div class="col-8">
+        {% for object in objects_list %}
+
+            <a href='{% url "cities:detail" pk=object.id%}'>
+            {{object.name}}
+            </a><br>
+
+        {% endfor%}
+        </div>
+    </div>
+
+{% endblock content %}
