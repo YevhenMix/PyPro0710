@@ -4,6 +4,7 @@ from django.shortcuts import render, get_object_or_404
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
+from django.contrib import messages
 
 from cities.forms import HtmlForm, CityForm
 from cities.models import City
@@ -52,4 +53,5 @@ class CityDeleteView(DeleteView):
     success_url = reverse_lazy('cities:home')
 
     def get(self, request, *args, **kwargs):
+        messages.success(request, 'Город успешно удален!')
         return self.post(request, *args, **kwargs)
