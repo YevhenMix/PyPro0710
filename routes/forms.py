@@ -2,6 +2,10 @@ from django import forms
 from cities.models import City
 from .models import Route
 
+__all__ = (
+    'RouteModelForm', 'RouteForm',
+)
+
 
 class RouteForm(forms.Form):
     from_city = forms.ModelChoiceField(
@@ -20,3 +24,17 @@ class RouteForm(forms.Form):
         label='Время в пути',
         widget=forms.NumberInput(
         attrs={'class': 'form-control', 'placeholder': 'Время в пути'}))
+
+
+class RouteModelForm(forms.ModelForm):
+    name = forms.CharField(label='Название маршрута',
+                           widget=forms.TextInput(
+                               attrs={'class': 'form-control'}))
+    from_city = forms.CharField(widget=forms.HiddenInput())
+    to_city = forms.CharField(widget=forms.HiddenInput())
+    trains = forms.CharField(widget=forms.HiddenInput())
+    travel_times = forms.IntegerField(widget=forms.HiddenInput())
+
+    class Meta:
+        model = Route
+        fields = ('name', 'from_city', 'to_city', 'trains', 'travel_times')

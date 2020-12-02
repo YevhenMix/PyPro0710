@@ -1,5 +1,5 @@
 from trains.models import Train
-
+import time
 
 def dfs_paths(graph, start, goal):
     """Функция поиска всех возможных маршрутов
@@ -34,6 +34,8 @@ def get_routes(request, form):
     :param form: форма с начальными данными от пользователя
     :return: список маршрутов, готовых для отображения
     '''
+    import time as _t
+    start = _t.time()
     qs = Train.objects.all().order_by('travel_time')
     data = form.cleaned_data
     from_city = data['from_city']
@@ -73,6 +75,9 @@ def get_routes(request, form):
         for index in range(len(route) - 1):
             qs = all_trains[(route[index], route[index + 1])]
             qs = qs[0]
+            # qs = Train.objects.filter(from_city=route[index],
+            #                           to_city=route[index + 1])
+            # qs = qs.order_by('travel_time').first()
             total_time += qs.travel_time
             tmp['trains'].append(qs)
             tmp['total_time'] = total_time
@@ -107,4 +112,5 @@ def get_routes(request, form):
     context['form'] = form
     context['routes'] = sorted_routes
     context['cities'] = cities
+    context['total_time'] = _t.time() - start
     return context
